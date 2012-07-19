@@ -1,0 +1,27 @@
+<h1>Hello</h1>
+<%= @rows.headers.size %>
+
+<div class="well">
+<table class="table table-striped table-bordered table-condensed">
+	<td>Копипаст</td>
+	<td><%= @rows.select {|r| r[4] =~ /Копипаст/ }.size %></td>
+
+</table>
+</div>
+
+<table class="table table-striped table-bordered table-condensed">
+	<thead>
+		<% @rows.headers.map do |header| %>
+			<th><%= header %></th>
+		<% end %>
+	</thead>
+	<tbody>
+		<% @rows.map do |row| %>
+			<tr>
+				<% @rows.headers.size.times do |x| %>
+					<td><%= row[x] %></td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
