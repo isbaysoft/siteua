@@ -40,16 +40,17 @@ class AgentSiteua
   	end.submit
 	end
 
-	def getstats
-		# url = 'http://siteua.org/manage/reports/viewsstats'
-		# page = agent.get(url)
-		# page = page.form do |form|
-		# 	form.radiobutton_with(:name => 'period', :value => '2').check
-		# 	form.radiobutton_with(:name => 'author').check
-		# end.submit
-		# page = agent.click(page.link_with(:text => /CSV/))
-		# s = page.body.force_encoding('utf-8')
-		s=feed
+	def getstats(date=nil)
+		url = 'http://siteua.org/manage/reports/viewsstats'
+		page = agent.get(url)
+		page = page.form do |form|
+			form.radiobutton_with(:name => 'period', :value => '2').check
+			form.radiobutton_with(:name => 'author').check
+			form.field_with(:name => 'date').value = date
+		end.submit
+		page = agent.click(page.link_with(:text => /CSV/))
+		s = page.body.force_encoding('utf-8')
+		# s=feed
 		@statistics = Statistics.new(CSV.parse(s,:col_sep => ';', :headers => true))
 	end
 

@@ -90,8 +90,6 @@
 		$('#copypasts_ratio, #rewrites_ratio').keyup(function(){
 			updateSum();
 		});
-		$('#datepicker').datepicker({
-			format: 'mm-dd-yyyy'
-		});
+		$('#datepicker').datepicker({"format": "dd.mm.yyyy", "autoclose": true});
 	})
 </script>
