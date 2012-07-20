@@ -1,27 +1,97 @@
-<h1>Hello</h1>
-<%= @rows.headers.size %>
-
+<%= form_for 'reports', :url => reports_path, :html => {:class => 'form-horizontal'} do |f| %>
+	<div class="control-group">
+	  <label class="control-label" for="appendedInputButton">Месяц</label>
+	  <div class="controls">
+	    <div class="input-append">
+	    	<%= text_field_tag :date, @date, :id => 'datepicker' %><%= f.submit('Go!', :class => 'btn') %>
+	    </div>
+	  </div>
+	</div>
+<% end %>
+<hr>
 <div class="well">
-<table class="table table-striped table-bordered table-condensed">
-	<td>Копипаст</td>
-	<td><%= @rows.select {|r| r[4] =~ /Копипаст/ }.size %></td>
-
-</table>
+	<table class="table ">
+		<thead>
+			<th width="20%">Коэфф. (%)</th>
+			<th width="20%">Тип новости</th>
+			<th width="20%">Количество</th>
+			<th width="20%">Сумма</th>
+			<th width="10%">ЗП</th>
+			<th width="10%">ЗП-%</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td><%= text_field_tag :copypasts_ratio, @copypasts_ratio, :class => "input-mini" %></td>
+				<td>Копипаст</td>
+				<td><%= @stat.copypasts.size %></td>
+				<td id="copypasts_sum"><%= @stat.copypasts.inject(0) {|sum,r| sum+r[5].to_i} %></td>
+				<td><span class="label label-info" id="copypasts_sum_ratio">0</span></td>
+				<td><span class="label label-info" id="copypasts_sum_ratio_p">0</span></td>
+			</tr>
+			<tr>
+				<td><%= text_field_tag :rewrites_ratio, @rewrites_ratio, :class => "input-mini" %></td>
+				<td>Рерайт</td>
+				<td><%= @stat.rewrites.size %></td>
+				<td id="rewrites_sum"><%= @stat.rewrites.inject(0) {|sum,r| sum+r[5].to_i} %></td>
+				<td><span class="label label-info" id="rewrites_sum_ratio">0</span></td>
+				<td><span class="label label-info" id="rewrites_sum_ratio_p">0</span></td>
+			</tr>
+			<tr>
+				<th></th>
+				<th>Всего</th>
+				<th><%= @stat.rows.size %></th>
+				<th><%= @stat.rows.inject(0) {|sum,r| sum+r[5].to_i} %></th>
+				<td><span class="label label-info" id="sum_ratio">0</span></td>
+				<td><span class="label label-info" id="sum_ratio_p">0</span></td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 
 <table class="table table-striped table-bordered table-condensed">
 	<thead>
-		<% @rows.headers.map do |header| %>
+		<th>#</th>
+		<% @stat.rows.headers.map do |header| %>
 			<th><%= header %></th>
 		<% end %>
 	</thead>
 	<tbody>
-		<% @rows.map do |row| %>
+		
+		<% (cnt=0) && @stat.rows.map do |row| %>
 			<tr>
-				<% @rows.headers.size.times do |x| %>
+				<td><%= cnt+=1 %></td>
+				<% @stat.rows.headers.size.times do |x| %>
 					<td><%= row[x] %></td>
 				<% end %>
 			</tr>
 		<% end %>
 	</tbody>
 </table>
+
+<script type="text/javascript">
+	function updateSum() {
+		copypasts = $('#copypasts_sum').html();
+		rewrites = $('#rewrites_sum').html();
+		copypasts_ratio = $('#copypasts_ratio').val();
+		rewrites_ratio = $('#rewrites_ratio').val();
+		zp = Math.floor(copypasts*copypasts_ratio/100);
+		zp_p = Math.floor(rewrites*rewrites_ratio/100);
+		$.cookie('copypasts_ratio', copypasts_ratio);
+		$.cookie('rewrites_ratio', rewrites_ratio);
+		$('#copypasts_sum_ratio').html((zp).toFixed());
+		$('#rewrites_sum_ratio').html((zp_p).toFixed());
+		$('#sum_ratio').html((zp + zp_p).toFixed());
+		$('#copypasts_sum_ratio_p').html((copypasts - zp).toFixed());
+		$('#rewrites_sum_ratio_p').html((rewrites - zp_p).toFixed());
+		$('#sum_ratio_p').html(((copypasts - zp) + (rewrites - zp_p)).toFixed());
+	}
+	$(document).ready(function(){
+		updateSum();
+		$('#copypasts_ratio, #rewrites_ratio').keyup(function(){
+			updateSum();
+		});
+		$('#datepicker').datepicker({
+			format: 'mm-dd-yyyy'
+		});
+	})
+</script>

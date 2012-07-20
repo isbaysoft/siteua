@@ -9,6 +9,7 @@ gem 'mysql2'
 gem "mechanize", "~> 2.5.1"
 gem "fastercsv", "~> 1.5.5"
 gem 'bootstrap-sass', '~> 2.0.4.0'
+gem 'bootstrap-datepicker-rails'
 gem 'execjs'
 gem 'sass-rails',   '~> 3.2.3'
 gem 'therubyracer'
