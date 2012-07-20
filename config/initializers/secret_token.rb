@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Siteua::Application.config.secret_token = 'ca81c1c8df4596e82e1af4e73c6577af9315d43ca7d1344732f211e13d761849cd855041ba300244f79f77cae61b87dec02cf7c33ed61dee92e6d084fc35af87'
+Siteua::Application.config.secret_token = 'cb1290ec88421366c82f37a82ca70690f3889369b315f151f40ecf4f693faa4e8690ed6db8f29e5e8bfefd9def946b32003771aff5827c36fce5a08b63dfdff7'
