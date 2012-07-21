@@ -16,15 +16,15 @@
 			<th width="20%">Тип новости</th>
 			<th width="20%">Количество</th>
 			<th width="20%">Сумма</th>
-			<th width="10%">ЗП</th>
-			<th width="10%">ЗП-%</th>
+			<th width="10%">Катя</th>
+			<th width="10%">Саша</th>
 		</thead>
 		<tbody>
 			<tr>
 				<td><%= text_field_tag :copypasts_ratio, @copypasts_ratio, :class => "input-mini" %></td>
 				<td>Копипаст</td>
 				<td><%= @stat.copypasts.size %></td>
-				<td id="copypasts_sum"><%= @stat.copypasts.inject(0) {|sum,r| sum+r[5].to_i} %></td>
+				<td id="copypasts_sum"><%= sprintf("%0.2f",@stat.copypasts.inject(0) {|sum,r| sum+r[5].to_f}) %></td>
 				<td><span class="label label-info" id="copypasts_sum_ratio">0</span></td>
 				<td><span class="label label-info" id="copypasts_sum_ratio_p">0</span></td>
 			</tr>
@@ -32,7 +32,7 @@
 				<td><%= text_field_tag :rewrites_ratio, @rewrites_ratio, :class => "input-mini" %></td>
 				<td>Рерайт</td>
 				<td><%= @stat.rewrites.size %></td>
-				<td id="rewrites_sum"><%= @stat.rewrites.inject(0) {|sum,r| sum+r[5].to_i} %></td>
+				<td id="rewrites_sum"><%= sprintf("%0.2f",@stat.rewrites.inject(0) {|sum,r| sum+r[5].to_f}) %></td>
 				<td><span class="label label-info" id="rewrites_sum_ratio">0</span></td>
 				<td><span class="label label-info" id="rewrites_sum_ratio_p">0</span></td>
 			</tr>
@@ -40,7 +40,7 @@
 				<th></th>
 				<th>Всего</th>
 				<th><%= @stat.rows.size %></th>
-				<th><%= @stat.rows.inject(0) {|sum,r| sum+r[5].to_i} %></th>
+				<th><%= sprintf("%0.2f",@stat.rows.inject(0) {|sum,r| sum+r[5].to_f}) %></th>
 				<td><span class="label label-info" id="sum_ratio">0</span></td>
 				<td><span class="label label-info" id="sum_ratio_p">0</span></td>
 			</tr>
@@ -81,9 +81,9 @@
 		$('#copypasts_sum_ratio').html((zp).toFixed());
 		$('#rewrites_sum_ratio').html((zp_p).toFixed());
 		$('#sum_ratio').html((zp + zp_p).toFixed());
-		$('#copypasts_sum_ratio_p').html((copypasts - zp).toFixed());
-		$('#rewrites_sum_ratio_p').html((rewrites - zp_p).toFixed());
-		$('#sum_ratio_p').html(((copypasts - zp) + (rewrites - zp_p)).toFixed());
+		$('#copypasts_sum_ratio_p').html(Math.floor(copypasts - zp));
+		$('#rewrites_sum_ratio_p').html(Math.floor(rewrites - zp_p));
+		$('#sum_ratio_p').html(Math.floor((copypasts - zp) + (rewrites - zp_p)));
 	}
 	$(document).ready(function(){
 		updateSum();
