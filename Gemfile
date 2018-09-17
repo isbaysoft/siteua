@@ -11,6 +11,7 @@ gem 'rails', '3.2.0'
 # 4
 # 5
 # 6
+# 7
 
 gem "mechanize", "~> 2.5.1"
 gem "fastercsv", "~> 1.5.5"
